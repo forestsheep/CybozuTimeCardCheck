@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	// var data = chrome.extension.getBackgroundPage().articleData;
 	// if(data.error){
 		// $("#message").text(data.error);
-		$("#content-title").text("localStorage.aaa");
-		$("#content-author").text(localStorage.bbb);
+	$("#content").append(localStorage.timeCardTable);
+	$("#content-title").text("localStorage.aaa");
+		// $("#content-author").text(localStorage.bbb);
 		// $("#content").hide();
 	// }else{
 	// 	$("#message").hide();
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 	$("#content-first-access").text(data.firstAccess);
 	// }
 });
+
 
 setInterval(function(){
 	$("#content-title").text(localStorage.aaa);
