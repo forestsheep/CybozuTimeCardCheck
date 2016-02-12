@@ -1,23 +1,23 @@
-﻿body {
-	width: 320px;
+﻿body {    
+    width: 320px;
 }
 table {
-	border-collapse:collapse;
-	font-size: 0.85em;
+    border-collapse:collapse;
+    font-size: 0.85em;
 }
 table,td {
-	border: 1px solid gray;
+    border: 1px solid gray;
 }
 td{
-	padding: 4px;
-	text-overflow:ellipsis;
+    padding: 4px;
+    text-overflow:ellipsis;
 }
 td.item-name{
-	text-align: right;
+    text-align: right;
 }
 .content-div{
-	width:220px;
-	white-space:nowrap;
-	overflow-x:hidden;
-	text-overflow:ellipsis;
+    width:220px;
+    white-space:nowrap;
+    overflow-x:hidden;
+    text-overflow:ellipsis;
 }

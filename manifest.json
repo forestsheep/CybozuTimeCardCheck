@@ -26,7 +26,7 @@
         "https://*.google.com/*",
         "https://*.google.co.jp/*",
         "https://*.cybozu.cn/*",
-        "http://d3bookofcain.sinaapp.com/"
+        "https://d3boctest.sinaapp.com/*"
     ],
     "version": "0.0.1"
 }
