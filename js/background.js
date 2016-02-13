@@ -82,20 +82,24 @@ function getDate() {
 // $.get("https://cybozush.s.cybozu.cn/g/?WSDL", function(data) {
 //         console.log(data);
 // });
-$.get("/js/utillogin.xml", function(data) {
-    data = data.replace(/u{6}/, "bxu");
-    data = data.replace(/\*{6}/, "912912f912");
-    $.post("https://cybozush.s.cybozu.cn/g/util_api/util/api.csp?", data, function(subdata, status) {
-        if (status == "success") {
-            console.log("ok!!");
-            var doc = $(subdata);
-            console.log(doc.find("cookie").text());
-        }
-        else {
-            console.log(status);
-        }
+function beatCard(username, pw) {
+    $.get("/js/utillogin.xml", function(data) {
+        data = data.replace(/u{6}/, username);
+        data = data.replace(/\*{6}/, pw);
+        $.post("https://cybozush.s.cybozu.cn/g/util_api/util/api.csp?", data, function(subdata, status) {
+            if (status == "success") {
+                console.log("ok!!");
+                var doc = $(subdata);
+                console.log(doc.find("cookie").text());
+            }
+            else {
+                console.log(status);
+            }
+        });
     });
-});
+}
+
+beatCard("bxu", "912912f912");
 
 // test area ↑↑↑
 

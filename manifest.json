@@ -5,14 +5,15 @@
             "js/background.js"
         ]
     },
-    "description": "我的第一個chrome插件",
+    "description": "每天早上不再捉鸡",
     "icons": {
-        "128": "/img/icon.png",
-        "16": "/img/icon.png",
-        "48": "/img/icon.png"
+        "128": "/icons/title128.png",
+        "16": "/icons/title16.png",
+        "48": "/icons/title64.png"
     },
     "manifest_version": 2,
-    "name": "ご主人様，請問您需要什麼服務？",
+    "name": "高高兴兴上班",
+    "options_page": "options.html",
     "page_action": {
         "default_icon": {
             "19": "/img/icon.png",
