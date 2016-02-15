@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../js/jquery-2.0.0.min.js"></script>
+        <script src="options.js"></script>
+        <script src="../js/jquery.dialogBox.js"></script>
+        <link rel="stylesheet" href="../css/jquery.dialogbox.css">
+
+        <title>
+            打卡设置
+        </title>
+        <link rel="stylesheet" type="text/css" href="options.css" />
+    </head>
+<body>
+<div align="center">
+    <div id = "center_content" style="width:600px;text-align: center">
+        <h1>选项</h1>
+        <hr />
+        <div class="item-title">
+            <img src="../icons/agreement.png" class="item-icon">
+            &nbsp;&nbsp;<strong>协作上班</strong><br />
+        </div>
+        <div class="item-description">
+            有利于帮助同事更好地工作，同时也帮助了自己
+        </div>
+        <div align="left" class="item-action">
+            <input id = "mycheck" type="checkbox" class="checkin"></input>
+            我同意参加
+        </div>
+        <hr />
+        <div class="item-title">
+            <img src="../icons/agreement.png" class="item-icon">
+            &nbsp;&nbsp;<strong>检查结果并通知</strong><br />
+        </div>
+        <div class="item-description">
+            检查当天的结果，在10点以后显示通知给用户，可以设置检查的间隔，如果当天已读，则不会再显示通知，重启浏览器才能应用新设置
+        </div>
+        <div align="left" class="item-action">
+            检查间隔（分钟）：
+            <input id = "interval" type="number" style="width: 50px"></input>
+        </div>
+        <hr />
+        <img src="../icons/weixinqr.jpg" style="width: 150px;height: 150px;float: right;" >
+        <div class="item-title">
+            <img src="../icons/info.png" class="item-icon">
+            &nbsp;&nbsp;<strong>INFO</strong><br />
+        </div>
+        <div class="item-description">
+            想得到更多服务，请关注微信订阅号：<br />cybozuhappywork
+        </div>
+    </div>
+</div>
+<div id="dialog"></div>
+</body>
+
+</html>

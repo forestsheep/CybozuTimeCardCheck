@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // if(data.error){
         // $("#message").text(data.error);
     $("#content").append(localStorage.timeCardTable);
-    $("#content-title").text("localStorage.aaa");
+    $("#content-title").text("你好");
         // $("#content-author").text(localStorage.bbb);
         // $("#content").hide();
     // }else{

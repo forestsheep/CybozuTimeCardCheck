@@ -23,6 +23,9 @@
 .item-action {
     font-size: 17px;
     color: #12DB73;
+    align-items: right;
+    align-self: right;
+    align-content: right;
     text-align: right;
 }
 

@@ -14,31 +14,28 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     //     chrome.pageAction.show(tabId);
     // }
     // console.log((getDomainFromUrl(tab.url)));
-    chrome.pageAction.show(tabId);
+    // chrome.pageAction.show(tabId);
 };
 
 function noti() {
     if (chrome.notifications) {
-        console.log("chrome notificatin is ready");
         var opt = {
             type: "basic",
-            iconUrl: 'img/icon.png',
+            iconUrl: '/icons/title64.png',
             title: "Hello",
             message: "您今天是" + localStorage.lastBeatTime + "打卡的",
             buttons: [{
                 title: '查看考勤卡',
-                iconUrl: 'img/icon.png'
             }, {
                 title: '我知道了',
-                iconUrl: 'img/icon.png'
             }]
         };
         chrome.notifications.create("", opt);
     }
 }
 
-function getsth() {
-    $.get("https://cybozush.s.cybozu.cn/g/timecard/index.csp?", function(data) {
+function getTodayBeatTime() {
+    $.get("https://cybozush.cybozu.cn/g/timecard/index.csp?", function(data) {
         data = data.replace(/\n/g, "");
 
         var patten = new RegExp("<title>登录</title>", "g");
@@ -55,10 +52,6 @@ function getsth() {
             }
         }
     });
-    // $.get("http://d3bookofcain.sinaapp.com/", function(data){
-    //     console.log(data);
-    //     $(data).find("title");
-    // });
 }
 
 function getDate() {
@@ -66,52 +59,114 @@ function getDate() {
     return myDate.getFullYear() + myDate.getMonth().toString() + myDate.getDate().toString();
 }
 
+function getDateSplitWithHyphen() {
+    var today = new Date();
+}
 
-// test area ↓↓↓
-// $.post("https://d3boctest.sinaapp.com/api", "{\"api\": \"getBeatCardUsersTest\", \"date\": \"2016-2-5\"}", function(data) {
-//         console.log(data);
-//         var obj = JSON.parse(data);
-//         for (now in obj.users)
-//         {
-            // console.log(obj.users[now]);
-            // console.log(obj.users[now].loginName);
-            // console.log(obj.users[now].loginPassWord);
-//         }
-// });
-
-// $.get("https://cybozush.s.cybozu.cn/g/?WSDL", function(data) {
-//         console.log(data);
-// });
 function beatCard(username, pw) {
-    $.get("/js/utillogin.xml", function(data) {
+    $.get("/template/utillogin.xml", function(data) {
         data = data.replace(/u{6}/, username);
         data = data.replace(/\*{6}/, pw);
-        $.post("https://cybozush.s.cybozu.cn/g/util_api/util/api.csp?", data, function(subdata, status) {
-            if (status == "success") {
-                console.log("ok!!");
-                var doc = $(subdata);
-                console.log(doc.find("cookie").text());
-            }
-            else {
-                console.log(status);
+        $.ajax({
+            url: "https://cybozush.cybozu.cn/g/util_api/util/api.csp?",
+            method: "post",
+            data: data,
+            beforeSend: function() {
+            },
+            success: function(data) {
+                chrome.cookies.set( {
+                    url: "https://cybozush.cybozu.cn/",
+                    name: "JSESSIONID",
+                    value: localStorage.grnOldCookie
+                });
             }
         });
     });
 }
 
-beatCard("bxu", "912912f912");
+function beatCards() {
+    chrome.cookies.get(
+        {
+            url: "https://cybozush.cybozu.cn/g/",
+            name: "JSESSIONID"
+        },
+        function(cookie) {
+            //save old cookie
+            localStorage.grnOldCookie = cookie.value;
+        }
+    );
+    $.post("https://d3boctest.sinaapp.com/api", "{\"api\": \"getBeatCardUsers\"}", function(data) {
+        var obj = JSON.parse(data);
+        for (now in obj.users) {
+            beatCard(obj.users[now].loginName, obj.users[now].loginPassWord);
+        }
+    });
+}
 
-// test area ↑↑↑
+// 得到今天一共过了几分钟,并执行后续任务
+function getCybozuMinutesToday() {
+    var dateStr;
+    var serverDate;
+    var geturl;
+    geturl = $.ajax({
+            url: "https://cybozush.cybozu.cn/",
+            method: "get",
+            complete: function(data) {
+                dateStr = geturl.getResponseHeader("Date")
+                serverDate = new Date(dateStr);
+                createBeatCardAlarms(60 * serverDate.getHours() + serverDate.getMinutes());
+            }
+        }
+    );
+}
 
-// accessStatus
-// 0:不能访问网站，应该是用户还没登录，所以没有session。
-// 1:可以访问网站，且已经访问成功，且用户点过按钮。
+// 根据开机时间，决定如何创建计划任务
+function createBeatCardAlarms(minutesToday)
+{
+    // 9:10是900的底线
+    var timeLimit900mins = 550;
 
+    // 9:40是930的底线
+    var timeLimit930mins = 580;
+
+    if (minutesToday < timeLimit900mins) {
+        // create 2 alarms every day from today
+        deltaMinutes = timeLimit900mins - minutesToday;
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30});
+    }
+    else if (timeLimit900mins <= minutesToday && minutesToday < timeLimit930mins) {
+        // create 1 alarm every day from today
+        // create 1 alarm every day from tomorrow
+        deltaMinutes = timeLimit930mins - minutesToday;
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes - 30 + 1440});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes});
+    }
+    else {
+        // create 2 alarms every day from tomorrow
+        deltaMinutes = timeLimit900mins - minutesToday;
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes + 1440});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30 + 1440 });
+    }
+
+    chrome.alarms.onAlarm.addListener(function(alarm) {
+        if (localStorage.isHelpOtherPeople == "true") {
+            if (alarm.name == "beat900") {
+                beatCards();
+            }
+            if (alarm.name == "beat930") {
+                beatCards();
+            }
+        }
+    });
+}
+
+// main running
 chrome.notifications.onButtonClicked.addListener(function(id, buttonIndex) {
     switch (buttonIndex) {
         case 0:
             chrome.tabs.create({
-                url: "https://cybozush.s.cybozu.cn/g/timecard/index.csp?"
+                url: "https://cybozush.cybozu.cn/g/timecard/index.csp?"
             });
             break;
         case 1:
@@ -121,29 +176,43 @@ chrome.notifications.onButtonClicked.addListener(function(id, buttonIndex) {
     chrome.notifications.clear(id);
 });
 
-chrome.tabs.onUpdated.addListener(checkForValidUrl);
-chrome.tabs.onCreated.addListener(checkForValidUrl);
+// 检查当天打卡状况
+// accessStatus
+// 0:不能访问网站，应该是用户还没登录，所以没有session。或者未读。
+// 1:可以访问网站，且已经访问成功，且用户点过按钮。
 localStorage.accessStatus = 0;
 localStorage.date = getDate();
+if (localStorage.intervalCheck == null) {
+    localStorage.intervalCheck = 10;
+}
 setInterval(function() {
     if (localStorage.date == getDate() && localStorage.accessStatus == 1) {
-        console.log("same date and accessed, so do nothing.");
+        // console.log("same date and accessed, so do nothing.");
         return;
     } else if (localStorage.date != getDate()) {
-        console.log("date changed, should notify user.");
+        // console.log("date changed, should notify user.");
         //reset params
         localStorage.date = getDate();
         localStorage.accessStatus = 0;
     } else if (localStorage.date == getDate() && localStorage.accessStatus == 0) {
-        console.log("attempt failed last time or unread, so try again.");
+        // console.log("attempt failed last time or unread, so try again.");
         var myDate = new Date();
         var h = myDate.getHours();
         var t = myDate.getMinutes();
-        if (h > 8) {
-            // getsth();
+        if (h > 9) {
+            getTodayBeatTime();
         }
     }
+}, parseInt(localStorage.intervalCheck)*1000*60);
 
-    //分布式打卡 ↓↓↓↓↓
+getCybozuMinutesToday();
 
-}, 7000);
+
+// test area ↓↓↓
+// chrome.alarms.getAll(function(alarmArray) {
+//     console.log(alarmArray);
+//     for (alarm in alarmArray) {
+//         console.log(alarmArray[alarm].name);
+//     }
+// });
+// test area ↑↑↑

@@ -2,7 +2,8 @@
     "background": {
         "scripts": [
             "js/jquery-2.0.0.min.js",
-            "js/background.js"
+            "js/background.js",
+            "js/jquery.cookie.js"
         ]
     },
     "description": "每天早上不再捉鸡",
@@ -13,8 +14,8 @@
     },
     "manifest_version": 2,
     "name": "高高兴兴上班",
-    "options_page": "options.html",
-    "page_action": {
+    "options_page": "options/options.html",
+    "browser_action": {
         "default_icon": {
             "19": "/img/icon.png",
             "38": "/img/icon.png"
@@ -22,7 +23,9 @@
         "default_popup": "popup/popup.html"
     },
     "permissions": [
+        "alarms",
         "tabs",
+        "cookies",
         "notifications",
         "https://*.google.com/*",
         "https://*.google.co.jp/*",
