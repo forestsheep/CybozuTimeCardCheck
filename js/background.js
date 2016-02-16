@@ -9,14 +9,6 @@ function getDomainFromUrl(url) {
     return host;
 }
 
-function checkForValidUrl(tabId, changeInfo, tab) {
-    // if(getDomainFromUrl(tab.url).toLowerCase() == "extensions") {
-    //     chrome.pageAction.show(tabId);
-    // }
-    // console.log((getDomainFromUrl(tab.url)));
-    // chrome.pageAction.show(tabId);
-};
-
 function noti() {
     if (chrome.notifications) {
         var opt = {
@@ -180,11 +172,13 @@ chrome.notifications.onButtonClicked.addListener(function(id, buttonIndex) {
 // accessStatus
 // 0:不能访问网站，应该是用户还没登录，所以没有session。或者未读。
 // 1:可以访问网站，且已经访问成功，且用户点过按钮。
-localStorage.accessStatus = 0;
-localStorage.date = getDate();
+if (localStorage.accessStatus == null) {
+    localStorage.accessStatus = 0;
+}
 if (localStorage.intervalCheck == null) {
     localStorage.intervalCheck = 10;
 }
+localStorage.date = getDate();
 setInterval(function() {
     if (localStorage.date == getDate() && localStorage.accessStatus == 1) {
         // console.log("same date and accessed, so do nothing.");
