@@ -132,21 +132,21 @@ function createBeatCardAlarms(minutesToday)
     if (minutesToday < timeLimit900mins) {
         // create 2 alarms every day from today
         deltaMinutes = timeLimit900mins - minutesToday;
-        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes});
-        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30});
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes, periodInMinutes: 1440});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30, periodInMinutes: 1440});
     }
     else if (timeLimit900mins <= minutesToday && minutesToday < timeLimit930mins) {
         // create 1 alarm every day from today
         // create 1 alarm every day from tomorrow
         deltaMinutes = timeLimit930mins - minutesToday;
-        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes - 30 + 1440});
-        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes});
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes - 30 + 1440, periodInMinutes: 1440});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes, periodInMinutes: 1440});
     }
     else {
         // create 2 alarms every day from tomorrow
         deltaMinutes = timeLimit900mins - minutesToday;
-        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes + 1440});
-        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30 + 1440 });
+        chrome.alarms.create("beat900", {delayInMinutes: deltaMinutes + 1440, periodInMinutes: 1440});
+        chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30 + 1440, periodInMinutes: 1440});
     }
 
     chrome.alarms.onAlarm.addListener(function(alarm) {
