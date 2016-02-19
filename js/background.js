@@ -116,10 +116,10 @@ function getCybozuMinutesToday() {
 function createBeatCardAlarms(minutesToday)
 {
     // 9:10是900的底线
-    var timeLimit900mins = 550;
+    var timeLimit900mins = 548;
 
     // 9:40是930的底线
-    var timeLimit930mins = 580;
+    var timeLimit930mins = 578;
 
     if (minutesToday < timeLimit900mins) {
         // create 2 alarms every day from today
@@ -201,12 +201,11 @@ setInterval(function() {
 
 getCybozuMinutesToday();
 
-
 // test area ↓↓↓
-// chrome.alarms.getAll(function(alarmArray) {
-//     console.log(alarmArray);
-//     for (alarm in alarmArray) {
-//         console.log(alarmArray[alarm].name);
-//     }
-// });
+chrome.alarms.getAll(function(alarmArray) {
+    console.log(alarmArray);
+    for (alarm in alarmArray) {
+        console.log(alarmArray[alarm].name, alarmArray[alarm].scheduledTime, alarmArray[alarm].periodInMinutes);
+    }
+});
 // test area ↑↑↑
