@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#dialog').dialogBox({
                 title: '确认',
                 hasBtn: true,
-                confirmValue: '狠心不管同事',
+                confirmValue: '人品值几个钱',
                 confirm: function() {
                 },
                 cancel: function() {

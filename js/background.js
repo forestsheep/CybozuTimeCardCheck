@@ -193,7 +193,7 @@ setInterval(function() {
         var myDate = new Date();
         var h = myDate.getHours();
         var t = myDate.getMinutes();
-        if (h > 9) {
+        if (h > 8 && t > 44) {
             getTodayBeatTime();
         }
     }
@@ -202,10 +202,11 @@ setInterval(function() {
 getCybozuMinutesToday();
 
 // test area ↓↓↓
-chrome.alarms.getAll(function(alarmArray) {
-    console.log(alarmArray);
-    for (alarm in alarmArray) {
-        console.log(alarmArray[alarm].name, alarmArray[alarm].scheduledTime, alarmArray[alarm].periodInMinutes);
-    }
-});
+console.log(localStorage.accessStatus);
+// chrome.alarms.getAll(function(alarmArray) {
+//     console.log(alarmArray);
+//     for (alarm in alarmArray) {
+//         console.log(alarmArray[alarm].name, alarmArray[alarm].scheduledTime, alarmArray[alarm].periodInMinutes);
+//     }
+// });
 // test area ↑↑↑

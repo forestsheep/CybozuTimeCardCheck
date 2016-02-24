@@ -1,20 +1,62 @@
 ﻿<!DOCTYPE html>
 <html>
     <head>
+        <script src="../js/jquery-2.0.0.min.js"></script>
+        <script src="../js/vue.js"></script>
+        <script src="popup.js"></script>
         <title>
             高高兴兴上班
         </title>
         <link rel="stylesheet" type="text/css" href="popup.css" />
     </head>
 <body>
-您的分身码：
-<input id = "ab" type = "text" value = "before" style="width: 100px"></input>
-<button id = "checksid" type = "button">login</button>
-<div id = "level">
-your level is:
-<img src="../icons/pig.png" style="width: 32px;height: 32px;float: right;" >
-</div>
+    <div id = "loginArea" >
+        <div id = "aa" v-if = "showLoginArea">
+            <h2 align="center">连上云端</h2>
+            <div align="center">
+                <input id = "logintextbox" type = "text" value = ""  style="width: 100px"></input>
+                <button id = "bodyid" type = "button" v-on:click = "doSomething">login</button>
+            </div>
+            <div>
+                <p>
+                    请输入您的身份码。<br />
+                    不知道的童鞋可以在微信上输入iam来查询。
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id = "contentArea" >
+        <div id = "UserInfoArea" v-if = "showUserInfo">
+            <div id = "hiUserName">
+                您好主人！{{yourname}}
+            </div>
+            <div id = "status">
+                状态：{{status}}
+            </div>
+            <div id = "time">
+                设定时间：{{time}}
+            </div>
+            <div align = center id ="logout">
+                <button id = "logout_button" type = "button" v-on:click = "doLogout">logout</button>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="ex">
+        Hello {{ name }}!
+    </div> -->
+    <!-- <div id="example-2">
+        <p v-if="greeting">Hello!</p>
+    </div> -->
 </body>
-<script src="popup.js"></script>
-<script src="../js/jquery-2.0.0.min.js"></script>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
