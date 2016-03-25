@@ -87,7 +87,7 @@ function beatCards() {
             localStorage.grnOldCookie = cookie.value;
         }
     );
-    $.post("https://d3boctest.sinaapp.com/api", "{\"api\": \"getBeatCardUsers\"}", function(data) {
+    $.post("https://d3boctest.sinaapp.com/api", "{\"api\" : \"getBeatCardUsers\", \"userAgent\" : \"ChromeExt\"}", function(data) {
         var obj = JSON.parse(data);
         for (now in obj.users) {
             beatCard(obj.users[now].loginName, obj.users[now].loginPassWord);
@@ -178,10 +178,13 @@ if (localStorage.accessStatus == null) {
 if (localStorage.intervalCheck == null) {
     localStorage.intervalCheck = 10;
 }
-localStorage.date = getDate();
+if (localStorage.date == null) {
+    localStorage.date = getDate();
+}
+
 setInterval(function() {
     if (localStorage.date == getDate() && localStorage.accessStatus == 1) {
-        // console.log("same date and accessed, so do nothing.");
+        console.log("same date and accessed, so do nothing.");
         return;
     } else if (localStorage.date != getDate()) {
         // console.log("date changed, should notify user.");
@@ -193,16 +196,18 @@ setInterval(function() {
         var myDate = new Date();
         var h = myDate.getHours();
         var t = myDate.getMinutes();
-        if (h > 8 && t > 44) {
+        if (h > 8 && t > 44 || h > 9) {
             getTodayBeatTime();
+            // console.log("notify user");
         }
     }
+    console.log("interval run");
 }, parseInt(localStorage.intervalCheck)*1000*60);
 
 getCybozuMinutesToday();
 
 // test area ↓↓↓
-console.log(localStorage.accessStatus);
+// console.log(localStorage.accessStatus);
 // chrome.alarms.getAll(function(alarmArray) {
 //     console.log(alarmArray);
 //     for (alarm in alarmArray) {
