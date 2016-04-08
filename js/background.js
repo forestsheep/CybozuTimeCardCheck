@@ -187,18 +187,15 @@ setInterval(function() {
         console.log("same date and accessed, so do nothing.");
         return;
     } else if (localStorage.date != getDate()) {
-        // console.log("date changed, should notify user.");
         //reset params
         localStorage.date = getDate();
         localStorage.accessStatus = 0;
     } else if (localStorage.date == getDate() && localStorage.accessStatus == 0) {
-        // console.log("attempt failed last time or unread, so try again.");
         var myDate = new Date();
         var h = myDate.getHours();
         var t = myDate.getMinutes();
-        if (h > 8 && t > 44 || h > 9) {
+         if (h > 8 && t > 44 || h > 9) {
             getTodayBeatTime();
-            // console.log("notify user");
         }
     }
     console.log("interval run");
