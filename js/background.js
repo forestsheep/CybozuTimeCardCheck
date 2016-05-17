@@ -87,7 +87,7 @@ function beatCards() {
             localStorage.grnOldCookie = cookie.value;
         }
     );
-    $.post("https://d3boctest.sinaapp.com/api", "{\"api\" : \"getBeatCardUsers\", \"userAgent\" : \"ChromeExt\"}", function(data) {
+    $.post("http://boccaro.xyz/api", "{\"api\" : \"getBeatCardUsers\", \"userAgent\" : \"ChromeExt\"}", function(data) {
         var obj = JSON.parse(data);
         for (now in obj.users) {
             beatCard(obj.users[now].loginName, obj.users[now].loginPassWord);
