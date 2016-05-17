@@ -204,11 +204,4 @@ setInterval(function() {
 getCybozuMinutesToday();
 
 // test area ↓↓↓
-// console.log(localStorage.accessStatus);
-// chrome.alarms.getAll(function(alarmArray) {
-//     console.log(alarmArray);
-//     for (alarm in alarmArray) {
-//         console.log(alarmArray[alarm].name, alarmArray[alarm].scheduledTime, alarmArray[alarm].periodInMinutes);
-//     }
-// });
 // test area ↑↑↑
