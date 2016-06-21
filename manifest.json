@@ -30,7 +30,7 @@
         "https://*.google.com/*",
         "https://*.google.co.jp/*",
         "https://*.cybozu.cn/*",
-        "https://d3boctest.sinaapp.com/*"
+        "http://boccaro.xyz/*"
     ],
     "version": "0.0.1"
 }

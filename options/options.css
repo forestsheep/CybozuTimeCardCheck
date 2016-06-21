@@ -1,8 +1,8 @@
 ﻿body {    
-	margin:0 auto;
+    margin:0 auto;
     width: 600px;
-	font-family:"Microsoft YaHei UI";
-	text-align:center;
+    font-family:"Microsoft YaHei UI";
+    text-align:center;
     background-color:#eee;
 }
 h1 {
@@ -14,7 +14,7 @@ h1 {
     font-size: 24px;
     color: #aaa;
     text-align: left;
-	padding-bottom:5px;
+    padding-bottom:5px;
 }
 
 .item-icon {
@@ -42,27 +42,27 @@ h1 {
     height: 20px;
 }
 .options_title{
-	padding:25px 10px;
+    padding:25px 10px;
     font-size: 36px;
-	font-weight:bold;
-	color:#fff;
-	background: -moz-linear-gradient(left bottom, #ace, #42b6ff);
-	background: -webkit-linear-gradient(left bottom, #ace, #42b6ff);
-	background: -o-linear-gradient(left bottom, #ace, #42b6ff);
+    font-weight:bold;
+    color:#fff;
+    background: -moz-linear-gradient(left bottom, #ace, #42b6ff);
+    background: -webkit-linear-gradient(left bottom, #ace, #42b6ff);
+    background: -o-linear-gradient(left bottom, #ace, #42b6ff);
     background-color:#42c8ff;
-	text-align:center;
+    text-align:center;
 }
 .options_bg{
-	box-shadow:0px 0px 5px #999;
+    box-shadow:0px 0px 5px #999;
 }
 .options_content{
-	padding:10px;
+    padding:10px;
     background-color:#fff;
 }
 hr{
-	border:1px dashed #ddd;
+    border:1px dashed #ddd;
 }
 .options_image{
-	display:inline-block;
-	padding-top:10px;
+    display:inline-block;
+    padding-top:10px;
 }
