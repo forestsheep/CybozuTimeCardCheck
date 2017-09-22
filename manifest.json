@@ -6,19 +6,18 @@
             "js/jquery.cookie.js"
         ]
     },
-    "description": "每天早上不再捉鸡",
+    "description": "互助有益健康",
     "icons": {
-        "128": "/icons/title128.png",
-        "16": "/icons/title16.png",
-        "48": "/icons/title64.png"
+        "128": "/icons/chicken.png",
+        "16": "/icons/chicken.png",
+        "48": "/icons/chicken.png"
     },
     "manifest_version": 2,
-    "name": "高高兴兴上班",
-    "options_page": "options/options.html",
+    "name": "互助打卡",
     "browser_action": {
         "default_icon": {
-            "19": "/icons/title64.png",
-            "38": "/icons/title64.png"
+            "19": "/icons/chicken.png",
+            "38": "/icons/chicken.png"
         },
         "default_popup": "popup/popup.html"
     },
@@ -30,7 +29,7 @@
         "https://*.google.com/*",
         "https://*.google.co.jp/*",
         "https://*.cybozu.cn/*",
-        "http://boccaro.xyz/*"
+        "http://xubing.win/*"
     ],
-    "version": "0.0.1"
+    "version": "2.0.1"
 }

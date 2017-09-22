@@ -1,62 +1,81 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <script src="../js/jquery-2.0.0.min.js"></script>
-        <script src="../js/vue.js"></script>
-        <script src="popup.js"></script>
-        <title>
-            高高兴兴上班
-        </title>
-        <link rel="stylesheet" type="text/css" href="popup.css" />
-    </head>
+
+<head>
+    <script src="../js/jquery-2.0.0.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="popup.js"></script>
+    <title>
+        高高兴兴上班
+    </title>
+    <link rel="stylesheet" type="text/css" href="popup.css" />
+</head>
+
 <body>
-    <div id = "loginArea" >
-        <div id = "aa" v-if = "showLoginArea">
-            <h2 align="center">连上云端</h2>
-            <div align="center">
-                <input id = "logintextbox" type = "text" value = ""  style="width: 100px"></input>
-                <button id = "bodyid" type = "button" v-on:click = "doSomething">login</button>
+    <!-- >
+        从这里开始2.0
+    <-->
+    <div>
+        <div id="user_free_edit">
+            <div>
+                <div>
+                    <label>用户名：</label>
+                    <div class="col-md-10">
+                        <input type="text" v-model="newPerson.loginname" />
+                    </div>
+                </div>
+                <div>
+                    <label>密码：</label>
+                    <div class="col-md-10">
+                        <input type="text" v-model="newPerson.password">
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label for=""></label>
+                    <button v-on:click="createPerson">保存用户信息</button>
+                </div>
+            </div>
+            <br>
+            <div>
+                <button v-on:click="showPassword">{{ showbuttonstring }}</button>
             </div>
             <div>
-                <p>
-                    请输入您的身份码。<br />
-                    不知道的童鞋可以在微信上输入iam来查询。
-                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="checkboxOne" v-model = "ischeckall" v-on:click = "checkall">
+                                全选
+                            </th>
+                            <th>用户名</th>
+                            <th>密码</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="person in people" v-if = "showpw">
+                            <td>
+                                <input type="checkbox" id="checkboxOne" v-model = "person.checked" v-on:click = "checkPerson($index)">
+                            </td>
+                            <td>{{ person.loginname }}</td>
+                            <td>{{ person.password }}</td>
+                            <td><button v-on:click="deletePerson($index)">Delete</button></td>
+                        </tr>
+                        <tr v-for="person in people" v-if = "hidepw">
+                            <td>
+                                    <input type="checkbox" v-model = "person.checked" v-on:click = "checkPerson($index)">
+                            </td>
+                            <td>{{ person.loginname }}</td>
+                            <td>******</td>
+                            <td><button v-on:click="deletePerson($index)">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <button v-on:click="dobeat">对打勾的用户进行打卡</button>
             </div>
         </div>
     </div>
-    <div id = "contentArea" >
-        <div id = "UserInfoArea" v-if = "showUserInfo">
-            <div id = "hiUserName">
-                您好主人！{{yourname}}
-            </div>
-            <div id = "status">
-                状态：{{status}}
-            </div>
-            <div id = "time">
-                设定时间：{{time}}
-            </div>
-            <div align = center id ="logout">
-                <button id = "logout_button" type = "button" v-on:click = "doLogout">logout</button>
-            </div>
-        </div>
-    </div>
-    <!-- <div id="ex">
-        Hello {{ name }}!
-    </div> -->
-    <!-- <div id="example-2">
-        <p v-if="greeting">Hello!</p>
-    </div> -->
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
