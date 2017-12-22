@@ -56,24 +56,29 @@ function getDateSplitWithHyphen() {
 }
 
 function beatCard(username, pw) {
-    $.get("/template/utillogin.xml", function(data) {
-        data = data.replace(/u{6}/, username);
-        data = data.replace(/\*{6}/, pw);
-        $.ajax({
-            url: "https://cybozush.cybozu.cn/g/util_api/util/api.csp?",
-            method: "post",
-            data: data,
+    // $.get("/template/utillogin.xml", function(data) {
+        // data = data.replace(/u{6}/, username);
+        // data = data.replace(/\*{6}/, pw);
+        res = $.ajax({
+            // url: "https://cybozush.cybozu.cn/g/util_api/util/api.csp?",
+            url: "https://cybozush.cybozu.cn/g/",
+            method: "get",
+            // data: data,
             beforeSend: function() {
             },
-            success: function(data) {
-                chrome.cookies.set( {
-                    url: "https://cybozush.cybozu.cn/",
-                    name: "JSESSIONID",
-                    value: localStorage.grnOldCookie
-                });
+            success: function(data, status, jqXHR) {
+                // chrome.cookies.set( {
+                    // url: "https://cybozush.cybozu.cn/",
+                    // name: "JSESSIONID",
+                    // value: localStorage.grnOldCookie
+                // });
+                console.log("success");
+                console.log(jqXHR.getAllResponseHeaders());
+                // console.log(data.getResponseHeader("Date"));
+                // console.log(data);
             }
         });
-    });
+    // });
 }
 
 function beatCards() {
@@ -116,7 +121,7 @@ function getCybozuMinutesToday() {
 function createBeatCardAlarms(minutesToday)
 {
     // 9:10是900的底线
-    var timeLimit900mins = 548;
+    var timeLimit900mins = 538;
 
     // 9:40是930的底线
     var timeLimit930mins = 578;
@@ -141,13 +146,22 @@ function createBeatCardAlarms(minutesToday)
         chrome.alarms.create("beat930", {delayInMinutes: deltaMinutes + 30 + 1440, periodInMinutes: 1440});
     }
 
+    chrome.alarms.create("test111", {delayInMinutes: 1, periodInMinutes: 1});
+
     chrome.alarms.onAlarm.addListener(function(alarm) {
         if (localStorage.isHelpOtherPeople == "true") {
             if (alarm.name == "beat900") {
-                beatCards();
+                var randomsec = Math.round(Math.random() * 1000 * 360);
+                setTimeout(function() { beatCard(); }, randomsec);
             }
             if (alarm.name == "beat930") {
-                beatCards();
+                var randomsec = Math.round(Math.random() * 1000 * 360);
+                setTimeout(function() { beatCard(); }, randomsec);
+            }
+            if (alarm.name == "test111") {
+                // var randomsec = Math.round(Math.random() * 1000 * 360);
+                // console.log(randomsec);
+                // setTimeout(function() { beatCard(); }, randomsec);
             }
         }
     });
