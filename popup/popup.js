@@ -16,7 +16,6 @@ this.tablecloth = function () {
 	// function receives object that has been clicked 
 	this.clickAction = function (obj) {
 		//alert(obj.innerHTML);
-
 	};
 
 
@@ -174,6 +173,15 @@ this.tablecloth = function () {
 
 	start();
 	//控制逻辑
+
+	String.format = function(src){
+		if (arguments.length == 0) return null;
+		var args = Array.prototype.slice.call(arguments, 1);
+		return src.replace(/\{(\d+)\}/g, function(m, i){
+			return args[i];
+		});
+	};
+
 	var vm = new Vue({
 		el: '#user_free_edit',
 		data: {
@@ -190,7 +198,7 @@ this.tablecloth = function () {
 			ischeckall: false
 		},
 		ready: function () {
-			if (localStorage.users != null){
+			if (localStorage.users != null) {
 				this.people = JSON.parse(localStorage.getItem('users'));
 			}
 			chrome.cookies.get({
@@ -272,42 +280,109 @@ this.tablecloth = function () {
 				}
 			},
 			dobeat: function () {
-
-				var xmlForm = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    <soap:Header>        <Timestamp soap:mustUnderstand="1" xmlns="http://schemas.xmlsoap.org/ws/2002/07/utility">            <Created>2037-08-12T14:45:00Z</Created>            <Expires>2037-08-12T14:45:00Z</Expires>        </Timestamp>        <Action soap:mustUnderstand="1" xmlns="http://schemas.xmlsoap.org/ws/2003/03/addressing">UtilLogin</Action>        <Security soap:mustUnderstand="1" xmlns="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility">            <UsernameToken>                <Username>xxx</Username>                <Password>xxx</Password>            </UsernameToken>        </Security>        <Locale>en</Locale>    </soap:Header>    <soap:Body>        <UtilLogin>            <parameters>                <login_name xmlns="" >uuuuuu</login_name>                <password xmlns="">******</password>            </parameters>        </UtilLogin>    </soap:Body></soap:Envelope>';
-				for (var i = 0; i < this.people.length; i++) {
-					if (!this.people[i].checked) {
-						var n = i + 1;
-						alert('第' + n + '人 → 放弃');
-						continue;
-					}
-					var username = this.people[i].loginname;
-					var pw = this.people[i].password;
-					var xmlSubmit = xmlForm.replace(/u{6}/, username);
-					xmlSubmit = xmlSubmit.replace(/\*{6}/, pw);
+				var loginin = function(token){
+					var jsonFormatString = "{\"username\":\"{0}\",\"password\":\"{1}\"}";
+					var sendInfo = String.format(jsonFormatString, "bxu", "yabeyabe333");
+					alert(sendInfo);
 					$.ajax({
-						url: "https://cybozush.cybozu.cn/g/util_api/util/api.csp?",
+						url: "https://cybozush.cybozu.cn/api/auth/login.json",
 						method: "post",
-						data: xmlSubmit,
-						async: false,
-						beforeSend: function () {},
-						success: function (data) {
-							chrome.cookies.set({
-								url: "https://cybozush.cybozu.cn/",
-								name: "JSESSIONID",
-								value: localStorage.grnOldCookie
-							});
-							var n = i + 1;
-							alert('第' + n + '人 → 成功')
-							$
+						// data: {
+						// 	"username": "bxu",
+						// 	"password": "yabeyabe333"
+						// },
+						data: sendInfo,
+						async: true,
+						dataType:'json',
+						contentType:"application/json",
+						headers: {
+							"Content-Type" : "application/json",
+							"X-Cybozu-RequestToken" : token,
+							"Cookie" : "JSESSIONID=LBowMRBGAaYW26rvyYWNrEj8X09CTRjlq8Lm9qbuBfLOgxImBpUbe1DX3D8HTRhj	;Path=/;Secure;HttpOnly"
+						},
+						beforeSend: function () {
+							alert('before loginin');
+						},
+						success: function (data, textStatus, jqXHR ) {
+							alert('success. jqXHR is ' + jqXHR.responseText);
+							var s = JSON.parse(jqXHR.responseText);
+							alert('loginin' + s.success);
 						},
 						error: function (jqXHR, textStatus, errorThrown) {
-							var n = i + 1;
-							alert('第' + n + '人 → 失败')
+							alert('error: ' +jqXHR.getAllResponseHeaders() + textStatus + errorThrown);
+							alert(jqXHR.responseText);
 						},
 						complete: function (jqXHR, textStatus) {},
-						statusCode: {}
+						statusCode: {
+							200: function() {
+								alert('loginin status is 200');
+							},
+							520: function() {
+								alert('loginin status is 520');
+							}
+						}
 					});
 				}
+				// var loginin = function(token) {
+				// 	alert("loginin fun is working. token is : " + token);
+				// }
+				$.ajax({
+					url: "https://cybozush.cybozu.cn/api/auth/getToken.json",
+					method: "post",
+					data: '',
+					async: true,
+					dataType:'json',
+					contentType:"application/json; charset=utf-8",
+					beforeSend: function () {
+					},
+					xhrFields: {
+						withCredentials: true // 这里设置了withCredentials
+					},
+					success: function (data, textStatus, jqXHR ) {
+						chrome.cookies.getAll(
+							{
+								url : "https://cybozush.cybozu.cn/api/auth/getToken.json"
+							},
+							function(cookies)
+							{
+								for (cur in cookies)
+									alert(cookies[cur].name + "    :    " + cookies[cur].value);
+							}
+							
+						);
+						// alert('success. jqXHR is ' + jqXHR.responseText );
+						// setTimeout(function(){
+							// do something 在此处获取 cookie 操作是安全的
+							// alert($.cookie());
+						// 	alert(JSON.stringify($.cookie()));
+						// },6000)
+						// chrome.cookies.get({
+						// 	url: "https://cybozush.cybozu.cn/g/",
+						// 	name: "JSESSIONID"
+						// 	},
+						// 	function (cookie) {
+						// 		//save old cookie
+						// 		alert(cookie.value);
+						// 	}
+						// );
+						// alert(typeof(data));
+						// var s = JSON.parse(jqXHR.responseText);
+						// alert(s.result.token);
+						// alert(s.success);
+						// alert('getall header: ' + jqXHR.getAllResponseHeaders());
+						// alert('getall responseXML: ' + jqXHR.responseXML);
+						// alert('getall responseText : ' + jqXHR.responseText);
+						// alert('cookie is ' + jqXHR.getResponseHeader('Set-Cookie'));
+						// loginin(s.result.token);
+					},
+					error: function (jqXHR, textStatus, errorThrown) {},
+					complete: function (jqXHR, textStatus) {},
+					statusCode: {
+						200: function () {
+							// alert('status is 200');
+						}
+					}
+				});
 			}
 		}
 	});
