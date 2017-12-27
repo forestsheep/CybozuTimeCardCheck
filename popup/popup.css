@@ -94,3 +94,62 @@ tr.even td.empty {
 	position: relative;
 	border-radius: 3px;
 }
+
+input {
+    border: 1px solid #DBE5DB;
+    border-radius: 2px;
+    width: 252px;
+    padding: 0 8px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    margin-right: 3px;
+    vertical-align: middle;
+    -webkit-appearance: textfield;
+    background-color: white;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    text-rendering: auto;
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    font: 400 13.3333px Arial;
+}
+
+.input-item {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+button {
+    -webkit-appearance: none;
+    padding: 0 22px;
+    margin-right: 0;
+    height: 30px;
+    font-size: 12px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    background: #30A080;
+    border-color: #30A080;
+    color: #fff;
+    box-sizing: content-box;
+    vertical-align: middle;
+    align-items: flex-start;
+    text-align: center;
+    user-select: none;
+    white-space: pre;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    font: 400 13.3333px Arial;
+    text-rendering: auto;
+}

@@ -190,204 +190,44 @@ this.tablecloth = function () {
 				password: '',
 				checked: false
 			},
-			hidepw: true,
-			showpw: false,
 			people: [],
-			showornot: false,
-			showbuttonstring: '显示密码',
-			ischeckall: false
 		},
 		ready: function () {
 			if (localStorage.users != null) {
 				this.people = JSON.parse(localStorage.getItem('users'));
 			}
-			chrome.cookies.get({
-					url: "https://cybozush.cybozu.cn/g/",
-					name: "JSESSIONID"
-				},
-				function (cookie) {
-					//save old cookie
-					localStorage.grnOldCookie = cookie.value;
-				});
-			if (this.people.length == 0) {
-				this.ischeckall = false;
-				return;
-			}
-			for (var i = 0; i < this.people.length; i++) {
-				if (!this.people[i].checked) {
-					this.ischeckall = false;
-					return;
-				}
-			}
-			this.ischeckall = true;
+			// chrome.cookies.get({
+			// 		url: "https://cybozush.cybozu.cn/g/",
+			// 		name: "JSESSIONID"
+			// 	},
+			// 	function (cookie) {
+			// 		//save old cookie
+			// 		localStorage.grnOldCookie = cookie.value;
+			// 	}
+			// );
 		},
 		methods: {
 			createPerson: function () {
-				this.people.push(this.newPerson);
+				//现在不需要存array，要记住是本人
+				localStorage.realself = JSON.stringify(this.newPerson)
+				alert("绑定账号已更新")
+				
 				// 添加完newPerson对象后，重置newPerson对象 
 				this.newPerson = {
 					loginname: '',
 					password: '',
 					checked: false
 				};
-				localStorage.setItem('users', JSON.stringify(this.people));
-			},
-			deletePerson: function (index) {
-				// 删一个数组元素 
-				this.people.splice(index, 1);
-				localStorage.setItem('users', JSON.stringify(this.people));
-			},
-			checkPerson: function (index) {
-				if (this.people[index].checked) {
-					this.people[index].checked = false;
-				} else {
-					this.people[index].checked = true;
-				}
-				localStorage.setItem('users', JSON.stringify(this.people));
-				for (var i = 0; i < this.people.length; i++) {
-					if (!this.people[i].checked) {
-						this.ischeckall = false;
-						return;
-					}
-				}
-				this.ischeckall = true;
-			},
-			checkall: function () {
-				if (this.ischeckall) {
-					this.ischeckall = false;
-					for (var i = 0; i < this.people.length; i++) {
-						this.people[i].checked = false;
-					}
-				} else {
-					this.ischeckall = true;
-					for (var i = 0; i < this.people.length; i++) {
-						this.people[i].checked = true;
-					}
-				}
-				localStorage.setItem('users', JSON.stringify(this.people));
-			},
-			showPassword: function () {
-				if (!this.showornot) {
-					this.showpw = true;
-					this.hidepw = false;
-					this.showornot = true;
-					this.showbuttonstring = '隐藏密码';
-				} else {
-					this.showpw = false;
-					this.hidepw = true;
-					this.showornot = false;
-					this.showbuttonstring = '显示密码';
-				}
+				// localStorage.setItem('users', JSON.stringify(this.people));
 			},
 			dobeat: function () {
-				var loginin = function(token){
-					var jsonFormatString = "{\"username\":\"{0}\",\"password\":\"{1}\"}";
-					var sendInfo = String.format(jsonFormatString, "bxu", "yabeyabe333");
-					alert(sendInfo);
-					$.ajax({
-						url: "https://cybozush.cybozu.cn/api/auth/login.json",
-						method: "post",
-						// data: {
-						// 	"username": "bxu",
-						// 	"password": "yabeyabe333"
-						// },
-						data: sendInfo,
-						async: true,
-						dataType:'json',
-						contentType:"application/json",
-						headers: {
-							"Content-Type" : "application/json",
-							"X-Cybozu-RequestToken" : token,
-							"Cookie" : "JSESSIONID=LBowMRBGAaYW26rvyYWNrEj8X09CTRjlq8Lm9qbuBfLOgxImBpUbe1DX3D8HTRhj	;Path=/;Secure;HttpOnly"
-						},
-						beforeSend: function () {
-							alert('before loginin');
-						},
-						success: function (data, textStatus, jqXHR ) {
-							alert('success. jqXHR is ' + jqXHR.responseText);
-							var s = JSON.parse(jqXHR.responseText);
-							alert('loginin' + s.success);
-						},
-						error: function (jqXHR, textStatus, errorThrown) {
-							alert('error: ' +jqXHR.getAllResponseHeaders() + textStatus + errorThrown);
-							alert(jqXHR.responseText);
-						},
-						complete: function (jqXHR, textStatus) {},
-						statusCode: {
-							200: function() {
-								alert('loginin status is 200');
-							},
-							520: function() {
-								alert('loginin status is 520');
-							}
-						}
-					});
-				}
-				// var loginin = function(token) {
-				// 	alert("loginin fun is working. token is : " + token);
-				// }
-				$.ajax({
-					url: "https://cybozush.cybozu.cn/api/auth/getToken.json",
-					method: "post",
-					data: '',
-					async: true,
-					dataType:'json',
-					contentType:"application/json; charset=utf-8",
-					beforeSend: function () {
-					},
-					xhrFields: {
-						withCredentials: true // 这里设置了withCredentials
-					},
-					success: function (data, textStatus, jqXHR ) {
-						chrome.cookies.getAll(
-							{
-								url : "https://cybozush.cybozu.cn/api/auth/getToken.json"
-							},
-							function(cookies)
-							{
-								for (cur in cookies)
-									alert(cookies[cur].name + "    :    " + cookies[cur].value);
-							}
-							
-						);
-						// alert('success. jqXHR is ' + jqXHR.responseText );
-						// setTimeout(function(){
-							// do something 在此处获取 cookie 操作是安全的
-							// alert($.cookie());
-						// 	alert(JSON.stringify($.cookie()));
-						// },6000)
-						// chrome.cookies.get({
-						// 	url: "https://cybozush.cybozu.cn/g/",
-						// 	name: "JSESSIONID"
-						// 	},
-						// 	function (cookie) {
-						// 		//save old cookie
-						// 		alert(cookie.value);
-						// 	}
-						// );
-						// alert(typeof(data));
-						// var s = JSON.parse(jqXHR.responseText);
-						// alert(s.result.token);
-						// alert(s.success);
-						// alert('getall header: ' + jqXHR.getAllResponseHeaders());
-						// alert('getall responseXML: ' + jqXHR.responseXML);
-						// alert('getall responseText : ' + jqXHR.responseText);
-						// alert('cookie is ' + jqXHR.getResponseHeader('Set-Cookie'));
-						// loginin(s.result.token);
-					},
-					error: function (jqXHR, textStatus, errorThrown) {},
-					complete: function (jqXHR, textStatus) {},
-					statusCode: {
-						200: function () {
-							// alert('status is 200');
-						}
-					}
-				});
+				var n = localStorage.realself
+				alert(n)
+				alert("in json")
+				alert(JSON.parse(n).loginname)
+				alert(JSON.parse(n).password)
 			}
 		}
 	});
 };
-// document.addEventListener('DOMContentLoaded', function () {
-// });
-/* script initiates on page load. */
 window.onload = tablecloth;

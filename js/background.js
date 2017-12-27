@@ -13,19 +13,13 @@ var loginin = function(token){
     $.ajax({
         url: "https://cybozush.cybozu.cn/api/auth/login.json",
         method: "post",
-        // data: {
-        // 	"username": "bxu",
-        // 	"password": "yabeyabe333"
-        // },
         data: sendInfo,
         async: true,
         dataType:'json',
         contentType:"application/json",
         headers: {
-            // "LOCALE" : "en-US",
             "Content-Type" : "application/json",
             "X-Cybozu-RequestToken" : token
-            // "Cookie" : "JSESSIONID=" + cookie
         },
         beforeSend: function (request) {
         },
@@ -59,19 +53,7 @@ $.ajax({
         withCredentials: true
     },
     success: function (data, textStatus, jqXHR ) {
-        // chrome.cookies.get(
-        //     {
-        //         url : "https://cybozush.cybozu.cn/api/auth/getToken.json",
-        //         name : "JSESSIONID"
-        //     },
-        //     function(cookie)
-        //     {
-        //         console.log(cookie.name + "    :    " + cookie.value);
-        //         console.log(s.result.token)
-        //     }
-        // );
         var s = JSON.parse(jqXHR.responseText).result.token;
         loginin(s)
-        // console.log(s.result.token);
     }
 });

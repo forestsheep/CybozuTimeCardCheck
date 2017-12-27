@@ -20,60 +20,20 @@
         <div id="user_free_edit">
             <div>
                 <div>
-                    <label>用户名：</label>
-                    <div class="col-md-10">
-                        <input type="text" v-model="newPerson.loginname" />
+                    <div class = "input-item">
+                        <input type="text" v-model="newPerson.loginname" placeholder="用户名"/>
                     </div>
                 </div>
                 <div>
-                    <label>密码：</label>
-                    <div class="col-md-10">
-                        <input type="text" v-model="newPerson.password">
+                    <div class = "input-item">
+                        <input type="text" v-model="newPerson.password" placeholder="密码">
                     </div>
                 </div>
-                <br>
                 <div>
-                    <label for=""></label>
                     <button v-on:click="createPerson">保存用户信息</button>
                 </div>
             </div>
             <br>
-            <div>
-                <button v-on:click="showPassword">{{ showbuttonstring }}</button>
-            </div>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" id="checkboxOne" v-model = "ischeckall" v-on:click = "checkall">
-                                全选
-                            </th>
-                            <th>用户名</th>
-                            <th>密码</th>
-                            <th>删除</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="person in people" v-if = "showpw">
-                            <td>
-                                <input type="checkbox" id="checkboxOne" v-model = "person.checked" v-on:click = "checkPerson($index)">
-                            </td>
-                            <td>{{ person.loginname }}</td>
-                            <td>{{ person.password }}</td>
-                            <td><button v-on:click="deletePerson($index)">Delete</button></td>
-                        </tr>
-                        <tr v-for="person in people" v-if = "hidepw">
-                            <td>
-                                    <input type="checkbox" v-model = "person.checked" v-on:click = "checkPerson($index)">
-                            </td>
-                            <td>{{ person.loginname }}</td>
-                            <td>******</td>
-                            <td><button v-on:click="deletePerson($index)">Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <div>
                 <button v-on:click="dobeat">对打勾的用户进行打卡</button>
             </div>
