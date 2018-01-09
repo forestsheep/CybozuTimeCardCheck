@@ -186,46 +186,97 @@ this.tablecloth = function () {
 		el: '#user_free_edit',
 		data: {
 			newPerson: {
+				id: '',
 				loginname: '',
 				password: '',
-				checked: false
+				time: ''
 			},
 			people: [],
+			hpw: '',
+			showhide: false,
+			sp: '显示密码',
+			// newPerson.time: '',
+			msg: '    '
 		},
 		ready: function () {
-			if (localStorage.users != null) {
-				this.people = JSON.parse(localStorage.getItem('users'));
+			// if (localStorage.users != null) {
+			// 	this.people = JSON.parse(localStorage.getItem('users'));
+			// }
+			// vm.showhide = false
+			if (localStorage.realself != null) {
+				this.newPerson = JSON.parse(localStorage.realself)
+				this.hpw = this.newPerson.password
+				if (this.hpw.length !=0) {
+					this.newPerson.password = "******"
+				}
+				// alert(vm.hpw)
 			}
-			// chrome.cookies.get({
-			// 		url: "https://cybozush.cybozu.cn/g/",
-			// 		name: "JSESSIONID"
-			// 	},
-			// 	function (cookie) {
-			// 		//save old cookie
-			// 		localStorage.grnOldCookie = cookie.value;
-			// 	}
-			// );
 		},
 		methods: {
 			createPerson: function () {
 				//现在不需要存array，要记住是本人
-				localStorage.realself = JSON.stringify(this.newPerson)
-				alert("绑定账号已更新")
-				
-				// 添加完newPerson对象后，重置newPerson对象 
-				this.newPerson = {
-					loginname: '',
-					password: '',
-					checked: false
-				};
-				// localStorage.setItem('users', JSON.stringify(this.people));
+				var sendInfo
+				if (this.showhide) {
+					// 显示着密码，所以要保存
+					this.hpw = this.newPerson.password
+					localStorage.realself = JSON.stringify(this.newPerson)
+					// 上传newPerson
+					var jsonFormatString = "{\"id\":\"{0}\",\"loginname\":\"{1}\",\"pw\":\"{2}\",\"time\":\"{3}\"}";
+					var n = this.newPerson
+					sendInfo = String.format(jsonFormatString, n.id, n.loginname, n.password, n.time);
+				} else {
+					// 不显示密码，所以只保存和上传除密码外的信息
+					var n = this.newPerson
+					//密码改完，再改回******
+					n.password = this.hpw
+					localStorage.realself = JSON.stringify(n)
+					var jsonFormatString = "{\"id\":\"{0}\",\"loginname\":\"{1}\",\"pw\":\"{2}\",\"time\":\"{3}\"}";
+					sendInfo = String.format(jsonFormatString, n.id, n.loginname, n.password, n.time);
+					n.password = "******"
+				}
+				$.ajax({
+					url: "http://xubing.win/api/updateuser",
+					method: "post",
+					data: sendInfo,
+					async: true,
+					dataType:'json',
+					contentType:"application/json",
+					success: function (data, textStatus, jqXHR ) {
+						// alert(typeof(data) == "object" &&  Object.prototype.toString.call(data).toLowerCase() == "[object object]" && !data.length)
+						// vm.l = JSON.stringify(data)
+						if (data.success == "true") {
+							vm.msg = "上传成功"
+						} else {
+							vm.msg = "上传失败，也许是id还未在微信注册"
+						}
+						setTimeout(() => {
+							vm.msg = '    '
+						}, 3000);
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						// vm.p = 'error: ' +jqXHR.getAllResponseHeaders() + textStatus + errorThrown
+					}
+				});
 			},
-			dobeat: function () {
-				var n = localStorage.realself
-				alert(n)
-				alert("in json")
-				alert(JSON.parse(n).loginname)
-				alert(JSON.parse(n).password)
+			showpw: function () {
+				if (!this.showhide) {
+					this.sp = "隐藏密码"
+					this.newPerson.password = this.hpw
+					this.showhide = true
+					// this.msg = this.hpw
+				}
+				else {
+					this.sp = "显示密码"
+					if (this.hpw.length !=0) { 
+						this.newPerson.password = "******"
+					}
+					this.showhide = false
+				}
+			},
+			onFocusPw: function () {
+				this.sp = "隐藏密码"
+				this.newPerson.password = this.hpw
+				this.showhide = true
 			}
 		}
 	});

@@ -1,5 +1,6 @@
 ﻿body {
-    width: 900px;
+    /* width: 900px; */
+    width: fit-content;
     font-size: 16px;
 }
 
@@ -53,9 +54,9 @@ tr.odd th.down {
     background: #bce774;
 }
 
-th.selected,
+/* th.selected,
 tr.even th.selected,
-tr.odd th.selected {}
+tr.odd th.selected {} */
 
 td.over,
 tr.even td.over,
@@ -121,6 +122,13 @@ input {
     font: 400 13.3333px Arial;
 }
 
+input.myradio {
+    -webkit-appearance: checkbox;
+    cursor: auto;
+    width: 30px;
+    height: 30px;
+}
+
 .input-item {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -152,4 +160,9 @@ button {
     display: inline-block;
     font: 400 13.3333px Arial;
     text-rendering: auto;
+}
+
+.options_image{
+    display:inline-block;
+    padding-top:10px;
 }

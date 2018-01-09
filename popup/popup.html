@@ -13,30 +13,29 @@
 </head>
 
 <body>
-    <!-- >
-        从这里开始2.0
-    <-->
     <div>
         <div id="user_free_edit">
             <div>
-                <div>
-                    <div class = "input-item">
-                        <input type="text" v-model="newPerson.loginname" placeholder="用户名"/>
-                    </div>
+                <div class = "input-item">
+                        <label>微信ID</label><input type="text" v-model="newPerson.id" placeholder="注册微信的唯一ID"/>
                 </div>
-                <div>
-                    <div class = "input-item">
-                        <input type="text" v-model="newPerson.password" placeholder="密码">
-                    </div>
+                <div class = "input-item">
+                        <label>登录名</label><input type="text" v-model="newPerson.loginname" placeholder="Garoon用户名"/>
                 </div>
-                <div>
-                    <button v-on:click="createPerson">保存用户信息</button>
+                <div class = "input-item">
+                        <label>密码</label><input type="text" v-model="newPerson.password" placeholder="Garoon密码" v-on:focus="onFocusPw">
                 </div>
-            </div>
+                
+                <br/>
+                <label>上班时间:</label>
+                <input class="myradio" type="radio" id = "one" v-model="newPerson.time" value ="900"><label for="one">900</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="myradio" type="radio" id = "two" v-model="newPerson.time" value="930"><label for="two">930</label><br/><br/>
+                <div>
+                    <button v-on:click="createPerson">保存用户信息</button>&nbsp;&nbsp;&nbsp;&nbsp;<button v-on:click="showpw">{{sp}}</button>
+                </div>
+                <div class="options_image"><img src="../icons/weixinqr.jpg" width="215px" ></div>
+                <div class="aaa">{{msg}}</div>
             <br>
-            <div>
-                <button v-on:click="dobeat">对打勾的用户进行打卡</button>
-            </div>
         </div>
     </div>
 </body>
