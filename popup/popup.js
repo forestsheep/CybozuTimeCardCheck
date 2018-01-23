@@ -242,19 +242,16 @@ this.tablecloth = function () {
 					dataType:'json',
 					contentType:"application/json",
 					success: function (data, textStatus, jqXHR ) {
-						// alert(typeof(data) == "object" &&  Object.prototype.toString.call(data).toLowerCase() == "[object object]" && !data.length)
-						// vm.l = JSON.stringify(data)
-						if (data.success == "true") {
+						if (data.success == true) {
 							vm.msg = "上传成功"
 						} else {
-							vm.msg = "上传失败，也许是id还未在微信注册"
+							vm.msg = data.msg
 						}
 						setTimeout(() => {
 							vm.msg = '    '
-						}, 3000);
+						}, 7000);
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
-						// vm.p = 'error: ' +jqXHR.getAllResponseHeaders() + textStatus + errorThrown
 					}
 				});
 			},
@@ -263,7 +260,6 @@ this.tablecloth = function () {
 					this.sp = "隐藏密码"
 					this.newPerson.password = this.hpw
 					this.showhide = true
-					// this.msg = this.hpw
 				}
 				else {
 					this.sp = "显示密码"
