@@ -1,5 +1,5 @@
 String.format = function(src){
-    if (arguments.length == 0) return null
+    if (arguments.length === 0) return null
     let args = Array.prototype.slice.call(arguments, 1)
     return src.replace(/\{(\d+)\}/g, function(m, i){
         return args[i]
@@ -231,10 +231,10 @@ function createBeatCardAlarms(minutesToday)
     }
 
     chrome.alarms.onAlarm.addListener(function(alarm) {
-        if (alarm.name == "survival") {
+        if (alarm.name === "survival") {
             survialReport()
         }
-        if (alarm.name == "beat900") {
+        if (alarm.name === "beat900") {
             getallusers()
             // 每人有多少leftmin时间余量可供随机
             setTimeout(() => {
@@ -251,7 +251,7 @@ function createBeatCardAlarms(minutesToday)
                 if (leftmin >= 9) {
                     console.log("9点随机策略")
                     for (let ii = 0; ii < ps.length; ii++){
-                        if (ps[ii].time == 900) {
+                        if (ps[ii].time === 900) {
                             addtime += getrandom(leftmin / countd)
                             console.log("间隔时间为：" + addtime)
                             setTimeout(() => {
@@ -266,13 +266,13 @@ function createBeatCardAlarms(minutesToday)
                     console.log("大于9点所以直接执行了")
                     for (let ii = 0; ii < ps.length; ii++) {
                         console.log(ps[ii].time)
-                        if (ps[ii].time == 900) {
+                        if (ps[ii].time === 900) {
                             setTimeout(() => {
                                 startbeat(ps[ii].loginname, ps[ii].pw)
                             }, 3000 * ii)
                         }
                     }
-                    if (meinfo.time == 900) {
+                    if (meinfo.time === 900) {
                         // 保险起见，延迟所有人数*3秒
                         setTimeout(() => {
                             selfbeat(900)
@@ -281,7 +281,7 @@ function createBeatCardAlarms(minutesToday)
                 }
             }, 5000)
         }
-        if (alarm.name == "beat930") {
+        if (alarm.name === "beat930") {
             getallusers()
             // 每人有多少leftmin时间余量可供随机
             setTimeout(() => {
@@ -298,7 +298,7 @@ function createBeatCardAlarms(minutesToday)
                 if (leftmin >= 9) {
                     console.log("9点半随机策略")
                     for (let ii = 0; ii < ps.length; ii++) {
-                        if (ps[ii].time == 930) {
+                        if (ps[ii].time === 930) {
                             addtime += getrandom(leftmin / countd)
                             console.log("间隔时间为：" + addtime)
                             setTimeout(() => {
@@ -312,14 +312,14 @@ function createBeatCardAlarms(minutesToday)
                 } else {
                     console.log("大于9点30所以直接执行了")
                     for (let ii = 0; ii < ps.length; ii++){
-                        if (ps[ii].time == 930) {
+                        if (ps[ii].time === 930) {
                             setTimeout(() => {
                                 startbeat(ps[ii].loginname, ps[ii].pw)
                             }, 3000 * ii)
                         }
                     }
                     // 保险起见，延迟所有人数*3秒
-                    if (meinfo.time == 930) {
+                    if (meinfo.time === 930) {
                         setTimeout(() => {
                             selfbeat(0)
                         }, ps.length * 3000)
@@ -341,7 +341,7 @@ function execRightnow900() {
         for (let ii = 0; ii < ps.length; ii++){
             let a = parseInt(ii)
             if (a) {
-                if (ps[ii].time == 900) {
+                if (ps[ii].time === 900) {
                     setTimeout(() => {
                         startbeat(ps[ii].loginname, ps[ii].pw)
                     }, 3000 * (ii + 1))
@@ -365,7 +365,7 @@ function execRightnow930() {
         for (let ii = 0; ii < ps.length; ii++){
             let a = parseInt(ii)
             if (a) {
-                if (ps[ii].time == 930) {
+                if (ps[ii].time === 930) {
                     setTimeout(() => {
                         startbeat(ps[ii].loginname, ps[ii].pw)
                     }, 3000 * (ii + 1))
@@ -388,24 +388,29 @@ function startbeat(na, pw)
 function selfbeat(beattime)
 {
     console.log(Date())
+    let dc = new Date().getDay()
+    if (dc === 0 || dc === 6) {
+        console.log("周六或周日，跳过self beat")
+        return
+    }
     let myinfo = JSON.parse(localStorage.realself)
-    if (beattime == 0) {
+    // if saturday or sunday, unbeat
+    if (beattime === 0) {
         console.log("start self beat anyway")
         getken(myinfo.loginname, myinfo.password, false)
-    } else if (myinfo.time == beattime) {
+    } else if (myinfo.time === beattime) {
         console.log("start self beat")
         getken(myinfo.loginname, myinfo.password, false)
     }
 }
 
-// 时间累加
 function getrandom(x) {
     d = Math.round(Math.random() * 1000 * 60 * x)
     return d
 }
 
 // 开始执行
-if (localStorage.serno == undefined)
+if (localStorage.serno === undefined)
 {
     let ss = randomWord(false,128)
     console.log('新创建serial')
@@ -437,3 +442,4 @@ if (548 < nowmin && nowmin < 578) {
 if (578 < nowmin && nowmin < 608) {
     execRightnow930()
 }
+
