@@ -184,26 +184,25 @@ function getallusers(){
 
 function creatselfbeatalarms(minutesToday)
 {
-    let timeStart900mins = 530
-    let timeLimit900mins = 533
+    let timeStart900mins = 500
+    let timeLimit900mins = 503
 
     if (minutesToday < timeLimit900mins) {
-        console.log("今天早些时候 创建900闹钟在" + (timeLimit900mins - minutesToday) + "分钟后" )
-        chrome.alarms.create("beat900", {delayInMinutes: timeLimit900mins - minutesToday, periodInMinutes: 1440})
+        console.log("今天早些时候 创建830闹钟在" + (timeLimit900mins - minutesToday) + "分钟后" )
+        chrome.alarms.create("beat830", {delayInMinutes: timeLimit900mins - minutesToday, periodInMinutes: 1440})
     }
     else {
         // create 2 alarms every day from tomorrow
-        console.log("今天晚些时候 创建900闹钟在" + (1440 - minutesToday + timeStart900mins) + "分钟后" )
-        chrome.alarms.create("beat900", {delayInMinutes: 1440 - minutesToday + timeStart900mins, periodInMinutes: 1440})
+        console.log("今天晚些时候 创建830闹钟在" + (1440 - minutesToday + timeStart900mins) + "分钟后" )
+        chrome.alarms.create("beat830", {delayInMinutes: 1440 - minutesToday + timeStart900mins, periodInMinutes: 1440})
     }
 
     chrome.alarms.onAlarm.addListener(function(alarm) {
         let delayms = getrandom(7)
-        if (alarm.name === "beat900") {
+        if (alarm.name === "beat830") {
             setTimeout(() => {
                 selfbeat()
             }, delayms)
-            
         }
     })
 }
@@ -462,8 +461,8 @@ let nowmin = h * 60 + t
 creatselfbeatalarms(nowmin)
 
 // 立即执行
-// 间于8:53至9:38的，立刻执行900
-if (533 <= nowmin && nowmin <= 580) {
+// 间于8:23至9:40的，立刻执行900
+if (503 <= nowmin && nowmin <= 580) {
     selfbeat()
 }
 // 间于9:38至10:08的，立刻执行930
